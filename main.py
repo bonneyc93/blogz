@@ -38,13 +38,15 @@ def new_post():
         body= request.form['blogbody']
 
         if title == "":
+            title = request.form['blogtitle']
             flash("Please fill out all fields.")
-            return render_template('newpost.html',blogbody=body)
+            return render_template('newpost.html', blogbody=body)
         
         if body == "":
+            body = request.form['blogbody']
             flash("Please fill out all fields.")
-            return render_template('newpost.html',blogtitle= title)
-           
+            return render_template('newpost.html', blogtitle=title)
+
         blogbody = Blog(title,body)
         db.session.add(blogbody)
         db.session.commit()
