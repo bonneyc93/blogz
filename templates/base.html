@@ -1,20 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <title>{{title}}</title>
+        <style>
+            .error{color:red;}
+        </style>
+        <nav>
+            <div align = "left"><a href="/">Home</a>
+            <a href="/blog">All Posts</a>
+            <a href="/newpost">New Post</a></span>
+            </div>
+            <div align = "right"><a href="/login">Login</a>
+            <a href="/logout">Logout</a>
+            </div>
+        </nav>
     </head>
     <body>
-        <nav>
-            <a href="/blog">Main Blog Page</a></span> <span><a href="/newpost">Add a Blog Entry</a>
-        </nav>
-
         {% with messages = get_flashed_messages() %}
-
-            <ul>
+            {% if messages %}
+            <ul class=flashes>
                 {% for message in messages %}
-                    {{message}}
+                    <li>{{message}}</li>
                 {% endfor %}
             </ul>
+        {% endif %}
         {% endwith %}
 
 {% block content %}
