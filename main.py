@@ -54,6 +54,8 @@ def signup():
         
         if username == '':
             username_error = 'That is not a valid username'
+        elif username.find(' ') >= 1:
+            username_error = 'That is not a valid username' 
         elif len(username) < 3 or len(username) >20:
             username_error = 'That is not a valid username'
         elif username == existing_user:
@@ -61,6 +63,8 @@ def signup():
 
         if password == '':
             password_error = 'That is not a valid password'
+        elif password.find(' ') >= 1:
+            password_error = 'Not a valid password.'
         elif len(password) < 3 or len(password) > 20:
             password_error = 'That is not a valid password'
         elif password != verify:
@@ -85,6 +89,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
+        
         username_error = ''
         password_error = ''
 
@@ -95,7 +100,7 @@ def login():
             password_error = 'Invalid password'
         elif user and user.username != username:
             username_error = 'Invalid username'
-        return render_template('login.html', username=username, username_error=username_error, password_error=password_error)
+        return render_template('login.html', username=username, username_error=username_error, password="", password_error=password_error)
 
     return render_template('login.html') 
 
@@ -107,16 +112,16 @@ def blog():
         user = User.query.filter_by(id=blog.owner_id).first()
         title = blog.title
         body = blog.body
-        return render_template('blogentry.html',post_title=title,post_body=body, user=user)
+        return render_template('blogentry.html',blog_title=title,blog_body=body, user=user)
     
     elif request.args.get('user'):      
         user = User.query.filter_by(id=request.args.get('user')).first()
         blogs = Blog.query.filter_by(owner_id=request.args.get('user'))
         return render_template('user.html', blogs=blogs, user=user)
           
-    blog_posts = Blog.query.all()
+    blogposts = Blog.query.all()
     users = User.query.all()
-    return render_template('blog.html', blog_posts=blog_posts, users=users)
+    return render_template('blog.html', blogposts=blogposts, users=users)
     
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
